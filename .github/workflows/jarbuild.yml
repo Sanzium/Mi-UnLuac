@@ -1,9 +1,6 @@
 name: Mi-UnLuac Nightly Build
 on: workflow_dispatch
 
-env:
-  GITHUB_BRANCH: ${{ github.ref_name }}
-
 jobs:
   jarbuild:
     name: Build Jar
@@ -15,6 +12,7 @@ jobs:
       run: |
         calculatedSha=$(git rev-parse --short ${{ github.sha }})
         echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+        
     - name: Setup JDK
       uses: actions/setup-java@v2
       with:
@@ -28,5 +26,5 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
-        name: Mi-Unluac-${{ env.GITHUB_BRANCH }}-${{ env.COMMIT_SHORT_SHA }}.jar
+        name: Mi-Unluac-${{ github.ref_name }}-${{ env.COMMIT_SHORT_SHA }}.jar
         path: build/unluac.jar
